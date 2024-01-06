@@ -221,15 +221,16 @@ def print_dis(detection_result):
    print(math.sqrt((x1-x2)**2+(y1-y2)**2))
 #--------------------------------------------------------------------------------------------------------------------------
 def check_extended(info, fingers_ext): # Ejemplo: fingers_ext = [0,1,0,0,1]
+  valor_retorno = True
   i = 0
   for e,ang in info: # Bucle en el que comparamos los valores de info con los de fingers_ext
     if (e == None) :
       continue
     if (e != fingers_ext[i]): 
-      return 1
+      valor_retorno = False
     i += 1
 
-  return 0   
+  return valor_retorno  
   
 def check_angle(info, fingers_ang, tolerance): # Si no nos interesa un angulo ponemos un none en lugar de la tolerancia en ese angulo
   i = 0
@@ -243,11 +244,86 @@ def check_angle(info, fingers_ang, tolerance): # Si no nos interesa un angulo po
 
     return 0
 
-def letras_estaticas(info):
-  
-  if (check_extended(info, [0,0,0,0,0]) and check_angle(info, [None, 90, 90, 90, 90], 90)):
-    return 'a'
+def draw_letter_A(info, image):
+    fingers_ext_A = [0, 0, 0, 0, 0]  # A: Thumb not extended, other fingers extended
+    fingers_ang_A = [100, -120, -100, -100, -160]  # A: No specific angle requirements
 
+    if check_extended(info, fingers_ext_A) and check_angle(info, fingers_ang_A, 10):
+      letter = 'A'
+      image = draw_bb_with_letter(image, detection_result, letter)
+    return image
+
+def draw_letter_E(info, image):
+    fingers_ext_E = [1, 0, 0, 0, 0]  # A: Thumb not extended, other fingers extended
+    fingers_ang_E = [70, -90, -90, -90, -90]  # A: No specific angle requirements
+
+    if check_extended(info, fingers_ext_E) and check_angle(info, fingers_ang_E, 20):
+      letter = 'E'
+      image = draw_bb_with_letter(image, detection_result, letter)
+    return image
+
+def draw_letter_I(info, image):
+    fingers_ext_I = [1, 0, 0, 0, 1]  # I: Thumb not extended, other fingers extended
+    fingers_ang_I = [100, -90, -90, -90, 90]  # I: No specific angle requirements
+
+    if check_extended(info, fingers_ext_I) and check_angle(info, fingers_ang_I, 10):
+      letter = 'I'
+      image = draw_bb_with_letter(image, detection_result, letter)
+    return image
+
+def draw_letter_P(info, image):
+    fingers_ext_P = [1, 1, 1, 1, 0]  # I: Thumb not extended, other fingers extended
+    fingers_ang_P = [100, 90, 90, 90, -40]  # I: No specific angle requirements
+
+    if check_extended(info, fingers_ext_P) and check_angle(info, fingers_ang_P, 10):
+      letter = 'P'
+      image = draw_bb_with_letter(image, detection_result, letter)
+    return image
+
+def draw_letter_U(info, image):
+    fingers_ext_U = [1, 1, 1, 0, 0]  # I: Thumb not extended, other fingers extended
+    fingers_ang_U = [100, 90, 90, -90, -40]  # I: No specific angle requirements
+
+    if check_extended(info, fingers_ext_U) and check_angle(info, fingers_ang_U, 30):
+      letter = 'U'
+      image = draw_bb_with_letter(image, detection_result, letter)
+    return image
+
+def draw_letter_L(info, image):
+    fingers_ext_L = [1, 1, 0, 0, 0]  # I: Thumb not extended, other fingers extended
+    fingers_ang_L = [100, 90, -90, -90, -40]  # I: No specific angle requirements
+
+    if check_extended(info, fingers_ext_L) and check_angle(info, fingers_ang_L, 30):
+      letter = 'L'
+      image = draw_bb_with_letter(image, detection_result, letter)
+    return image
+
+def draw_letter_O(info, image):
+    fingers_ext_O = [1, 0, 1, 1, 1]  # I: Thumb not extended, other fingers extended
+    fingers_ang_O = [130, -180, 110, 100, 90]  # I: No specific angle requirements
+
+    if check_extended(info, fingers_ext_O) and check_angle(info, fingers_ang_O, 20):
+      letter = 'O'
+      image = draw_bb_with_letter(image, detection_result, letter)
+    return image
+
+def draw_letter_B(info, image):
+    fingers_ext_B = [1, 1, 1, 1, 1]  # I: Thumb not extended, other fingers extended
+    fingers_ang_B = [160, -170, 180, 180, 180]  # I: No specific angle requirements
+
+    if check_extended(info, fingers_ext_B) and check_angle(info, fingers_ang_B, 15):
+      letter = 'B'
+      image = draw_bb_with_letter(image, detection_result, letter)
+    return image
+
+def draw_letter_C(info, image):
+    fingers_ext_C = [1, 1, 1, 1, 1]  # I: Thumb not extended, other fingers extended
+    fingers_ang_C = [160, 140, 140, 140, 140]   # I: No specific angle requirements
+
+    if check_extended(info, fingers_ext_C) and check_angle(info, fingers_ang_C, 20):
+      letter = 'C'
+      image = draw_bb_with_letter(image, detection_result, letter)
+    return image
 
 def draw_finger_info(info, lm, image):
   
@@ -303,18 +379,35 @@ with HandLandmarker.create_from_options(options) as landmarker:
         info = finger_info(lm)
         draw_finger_info(info, lm, image)
         #letra = letras_estaticas(info)
-        image = draw_finger_info(info, lm, image)
-        update_hist("H", lm)
+        #image = draw_finger_info(info, lm, image)
+        #update_hist("H", lm)
+        image = draw_letter_A(info, image)  # Llamada a la función para dibujar la letra A
+        update_hist("A", lm)
+        image = draw_letter_E(info, image)  # Llamada a la función para dibujar la letra A
+        update_hist("E", lm)
+        image = draw_letter_I(info, image)  # Llamada a la función para dibujar la letra I
+        update_hist("I", lm)
+        image = draw_letter_P(info, image)  # Llamada a la función para dibujar la letra P
+        update_hist("P", lm)
+        image = draw_letter_U(info, image)  # Llamada a la función para dibujar la letra U
+        update_hist("U", lm)
+        image = draw_letter_L(info, image)  # Llamada a la función para dibujar la letra L
+        update_hist("L", lm)
+        image = draw_letter_O(info, image)  # Llamada a la función para dibujar la letra O
+        update_hist("O", lm)
+        image = draw_letter_B(info, image)  # Llamada a la función para dibujar la letra B
+        update_hist("B", lm)
+        image = draw_letter_C(info, image)  # Llamada a la función para dibujar la letra C
+        update_hist("C", lm)
+        #if mov_letter_size == 0:
+            #if moving_letter("H"):
+              #mov_letter = "Hola"
+              #mov_letter_size = max_mov_letter_size
 
-        if mov_letter_size == 0:
-            if moving_letter("H"):
-              mov_letter = "Hola"
-              mov_letter_size = max_mov_letter_size
 
-
-        if mov_letter_size > 0:
-          image = draw_letter_by_size(image,mov_letter, mov_letter_size)
-          mov_letter_size -= 1
+        #if mov_letter_size > 0:
+          #image = draw_letter_by_size(image,mov_letter, mov_letter_size)
+          #mov_letter_size -= 1
         
     cv2.imshow('MediaPipe Hands', image)
     #print_pos(detection_result)  
